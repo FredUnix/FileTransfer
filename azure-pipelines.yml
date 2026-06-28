@@ -6,12 +6,14 @@ trigger:
     include:
       - main
       - master
+      - develop
 
 pr:
   branches:
     include:
       - main
       - master
+      - develop
 
 variables:
   buildConfiguration: 'Release'
