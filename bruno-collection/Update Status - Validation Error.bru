@@ -1,0 +1,35 @@
+meta {
+  name: Update Status - Validation Error
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{baseUrl}}/filetransfer/status
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "fileName": "test.csv.gz",
+    "applicationType": "QCS",
+    "status": "fileValidationError",
+    "message": "Missing required field: CustomerID"
+  }
+}
+
+tests {
+  test("Status is 200", function() {
+    expect(res.status).to.equal(200);
+  });
+
+  test("Validation error recorded", function() {
+    console.log("File marked as validation error");
+  });
+}
+
+docs {
+  Updates the status of a file to indicate validation failure.
+  Used when file content doesn't meet business rules or schema requirements.
+}

@@ -1,0 +1,52 @@
+meta {
+  name: Upload File
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/filetransfer
+  body: multipartForm
+  auth: none
+}
+
+headers {
+  X-Api-Key: {{apiKey}}
+}
+
+body:multipart-form {
+  file: @file(/Users/fredericgoutemant/Documents/Dev/FileTransfer/export.csv.gz) @contentType(application/gzip)
+  metadata: {"fileName": "test.csv", "timestamp": "2026-06-19T10:00:00Z", "applicationType": "QCS"}
+}
+
+vars:pre-request {
+  baseUrl: 127.0.0.1:5100
+}
+
+tests {
+  test("Status is 204", function() {
+    expect(res.status).to.equal(204);
+  });
+  
+  // A successful transfer returns 204 No Content (no response body).
+  // Remember the uploaded file name for the status requests.
+  bru.setVar("lastUploadedFile", "test.csv.gz");
+}
+
+docs {
+  Uploads a file to the receiver service via multipart/form-data.
+  
+  Headers:
+  - X-Api-Key: API key for authentication (if configured)
+  
+  Form Fields:
+  - file: The .gz or .zip file to upload (required)
+  - metadata: optional JSON string with exactly three fields: fileName,
+              timestamp and applicationType. applicationType must be one of
+              QCS, DFE, JRM. applicationType and timestamp are stored on the
+              file record; an invalid applicationType is rejected with 400.
+  
+  Returns:
+  - 204 No Content on success (no response body)
+  - 4xx/5xx on failure (error body)
+}

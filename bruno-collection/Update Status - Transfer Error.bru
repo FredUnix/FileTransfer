@@ -1,0 +1,39 @@
+meta {
+  name: Update Status - Transfer Error
+  type: http
+  seq: 8
+}
+
+post {
+  url: {{baseUrl}}/filetransfer/status
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "fileName": "test.csv.gz",
+    "applicationType": "QCS",
+    "status": "fileTransferError",
+    "message": "Network timeout during transfer"
+  }
+}
+
+vars:pre-request {
+  baseUrl: 127.0.0.1:5100
+}
+
+tests {
+  test("Status is 200", function() {
+    expect(res.status).to.equal(200);
+  });
+  
+  test("Transfer error recorded", function() {
+    console.log("File marked as transfer error");
+  });
+}
+
+docs {
+  Updates the status to indicate a transfer error occurred.
+  Used for network issues, timeouts, or other transfer-related failures.
+}

@@ -1,0 +1,35 @@
+meta {
+  name: Update Status - Format Error
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{baseUrl}}/filetransfer/status
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "fileName": "test.csv.gz",
+    "applicationType": "QCS",
+    "status": "fileFormatError",
+    "message": "File is not a valid CSV format"
+  }
+}
+
+tests {
+  test("Status is 200", function() {
+    expect(res.status).to.equal(200);
+  });
+
+  test("Format error recorded", function() {
+    console.log("File marked as format error");
+  });
+}
+
+docs {
+  Updates the status to indicate the file format is invalid or corrupted.
+  Used when the file cannot be parsed or is in an unexpected format.
+}

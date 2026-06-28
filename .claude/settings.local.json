@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dotnet --version)",
+      "Bash(uuidgen)",
+      "Bash(echo \"PROJ1=$\\(uuidgen\\)\")",
+      "Bash(echo \"PROJ2=$\\(uuidgen\\)\")",
+      "Bash(echo \"SLN=$\\(uuidgen\\)\")",
+      "Bash(sed -n '47,60p' HotFolderService/Program.cs)",
+      "Bash(sed -n '36,58p' tests/MimeTypeAndConfigTests.cs)",
+      "Bash(sed -n '66,90p' tests/RestFileTransferHandlerTests.cs)",
+      "Bash(export DOTNET_CLI_TELEMETRY_OPTOUT=1 DOTNET_NOLOGO=1)",
+      "Bash(/usr/local/share/dotnet/dotnet test *)",
+      "Bash(sed -n '/\"Receiver\"/,/^  }/p' HotFolderService/appsettings.json)",
+      "Bash(sed -n '98,175p' HotFolderService/GzReceiverService.cs)",
+      "Bash(dotnet test *)",
+      "Bash(dotnet restore *)",
+      "PowerShell(\\(Get-Content \"C:\\\\Dev\\\\FileTransfer\\\\bruno\\\\Send gz file.bru\" -Raw\\) -replace '/api/files/receive', '/filetransfer' | Set-Content \"C:\\\\Dev\\\\FileTransfer\\\\bruno\\\\Send gz file.bru\" -Encoding utf8)",
+      "Bash(dotnet build *)"
+    ]
+  }
+}

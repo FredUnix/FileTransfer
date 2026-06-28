@@ -1,0 +1,31 @@
+meta {
+  name: Ping
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/filetransfer/ping
+  body: none
+  auth: none
+}
+
+vars:pre-request {
+  baseUrl: http://localhost:5100
+}
+
+tests {
+  test("Status is 200", function() {
+    expect(res.status).to.equal(200);
+  });
+  
+  test("Response contains timestamp", function() {
+    expect(res.body).to.be.a('string');
+    expect(res.body).to.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/);
+  });
+}
+
+docs {
+  Health check endpoint that returns current UTC timestamp.
+  Used to verify the API is running and responsive.
+}

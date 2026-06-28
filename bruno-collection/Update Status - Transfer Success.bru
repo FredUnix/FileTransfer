@@ -1,0 +1,51 @@
+meta {
+  name: Update Status - Transfer Success
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/filetransfer/status
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "fileName": "export.csv.gz",
+    "applicationType": "QCS",
+    "status": "fileTransferSuccess",
+    "message": "File transferred successfully"
+  }
+}
+
+vars:pre-request {
+  baseUrl: 127.0.0.1:5100
+}
+
+tests {
+  test("Status is 200", function() {
+    expect(res.status).to.equal(200);
+  });
+  
+  test("Status updated successfully", function() {
+    console.log("File status updated to: fileTransferSuccess");
+  });
+}
+
+docs {
+  Updates the status of a received file to indicate successful transfer.
+  
+  Valid status values:
+  - fileTransferSuccess
+  - fileTransferError
+  - fileFormatError
+  - fileValidationError
+  - valid
+  
+  Body:
+  - fileName: Name of the file (required)
+  - applicationType: Type of application (optional)
+  - status: Status code (required)
+  - message: Status message (optional)
+}

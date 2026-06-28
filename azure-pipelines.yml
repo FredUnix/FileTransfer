@@ -1,0 +1,53 @@
+# Azure Pipelines — build & test HotFolderTransfer (.NET 8)
+# Restores, compiles the solution, then runs the xUnit tests with code coverage.
+
+trigger:
+  branches:
+    include:
+      - main
+      - master
+
+pr:
+  branches:
+    include:
+      - main
+      - master
+
+variables:
+  buildConfiguration: 'Release'
+  solution: 'HotFolderTransfer.sln'
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+  - task: UseDotNet@2
+    displayName: 'Install .NET 8 SDK'
+    inputs:
+      packageType: 'sdk'
+      version: '8.0.x'
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Restore'
+    inputs:
+      command: 'restore'
+      projects: '$(solution)'
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Build'
+    inputs:
+      command: 'build'
+      projects: '$(solution)'
+      arguments: '--configuration $(buildConfiguration) --no-restore'
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Test'
+    inputs:
+      command: 'test'
+      projects: 'tests/HotFolderTransfer.Tests.csproj'
+      arguments: >-
+        --configuration $(buildConfiguration)
+        --no-build
+        --logger trx
+        --collect "XPlat Code Coverage"
+      publishTestResults: true

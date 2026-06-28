@@ -1,0 +1,48 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>FileTransfer</RootNamespace>
+    <AssemblyName>FileTransfer</AssemblyName>
+  </PropertyGroup>
+
+  <!-- GzReceiverService hosts a Kestrel HTTP endpoint -->
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <!-- Expose internal members (e.g. GzReceiverService.HandleUploadAsync) to the test project -->
+  <ItemGroup>
+    <InternalsVisibleTo Include="FileTransfer.Tests" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Worker / hosting -->
+    <PackageReference Include="Microsoft.Extensions.Hosting"                Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="8.0.0" />
+
+    <!-- Typed HttpClient factory for outbound uploads -->
+    <PackageReference Include="Microsoft.Extensions.Http"                   Version="8.0.0" />
+
+    <!-- Swagger -->
+    <PackageReference Include="Swashbuckle.AspNetCore"                      Version="6.9.0" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi"                Version="8.0.0" />
+
+    <!-- Serilog -->
+    <PackageReference Include="Serilog.Extensions.Hosting"                  Version="9.0.0" />
+    <PackageReference Include="Serilog.Settings.Configuration"              Version="8.0.4" />
+    <PackageReference Include="Serilog.Sinks.Console"                       Version="6.0.0" />
+    <PackageReference Include="Serilog.Sinks.File"                          Version="6.0.0" />
+    <PackageReference Include="Serilog.Sinks.EventLog"                      Version="3.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

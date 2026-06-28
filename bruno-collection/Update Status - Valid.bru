@@ -1,0 +1,39 @@
+meta {
+  name: Update Status - Valid
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{baseUrl}}/filetransfer/status
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "fileName": "test.csv.gz",
+    "applicationType": "QCS",
+    "status": "valid",
+    "message": "File validated and ready for processing"
+  }
+}
+
+tests {
+  test("Status is 200", function() {
+    expect(res.status).to.equal(200);
+  });
+
+  test("File marked as valid", function() {
+    console.log("File validated - no callback is sent for 'valid'");
+  });
+}
+
+docs {
+  Updates the status of a file to 'valid', indicating it passed all validation checks.
+
+  NOTE: 'valid' is the only status that does NOT trigger a callback. The record is
+  updated and kept in the store. Every other status (fileTransferSuccess,
+  fileTransferError, fileFormatError, fileValidationError) posts the file record
+  payload to the registered callback endpoint.
+}

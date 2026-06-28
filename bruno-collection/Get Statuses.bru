@@ -1,0 +1,55 @@
+meta {
+  name: Get Statuses
+  type: http
+  seq: 9
+}
+
+get {
+  url: {{baseUrl}}/filetransfer/statuses
+  body: none
+  auth: none
+}
+
+vars:pre-request {
+  baseUrl: 127.0.0.1:5100
+}
+
+tests {
+  test("Status is 200", function() {
+    expect(res.status).to.equal(200);
+  });
+  
+  test("Response is an array", function() {
+    expect(res.body).to.be.an('array');
+  });
+  
+  test("Each record has expected fields", function() {
+    res.body.forEach(function(record) {
+      expect(record).to.have.property('fileName');
+      expect(record).to.have.property('applicationType');
+      expect(record).to.have.property('status');
+      expect(record).to.have.property('message');
+    });
+  });
+}
+
+docs {
+  Returns all file records currently held by the receiver's file record store
+  as a JSON array.
+  
+  Records are persisted to disk (Iot_FileTransfer_Records.json in the
+  ReceivedFolder), so they survive a service restart. A record is added on each
+  upload. Every status update other than 'valid' posts the record payload to the
+  registered callback endpoint, and the record is removed once the callback is
+  delivered successfully (2xx). A 'valid' update keeps the record and sends no
+  callback.
+  
+  Each record contains:
+  - fileName: Original file name
+  - timestamp / applicationType: values from the upload metadata
+    (applicationType is one of QCS, DFE, JRM)
+  - status: a received file starts as 'unknown'; a validator then sets one of
+            fileTransferSuccess, fileTransferError, fileFormatError,
+            fileValidationError, valid
+  - message: Human-readable status message
+}

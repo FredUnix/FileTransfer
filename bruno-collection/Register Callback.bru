@@ -1,0 +1,38 @@
+meta {
+  name: Register Callback
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/filetransfer/registercallback?callbackuri={{callbackUri}}
+  body: none
+  auth: none
+}
+
+params:query {
+  callbackuri: {{callbackUri}}
+}
+
+vars:pre-request {
+  baseUrl: http://localhost:5100
+  callbackUri: http://localhost:6000/callback
+}
+
+tests {
+  test("Status is 204", function() {
+    expect(res.status).to.equal(204);
+  });
+
+  test("Callback registered successfully", function() {
+    console.log("Callback endpoint registered");
+  });
+}
+
+docs {
+  Registers a callback URI that will receive notifications when files are validated.
+  This endpoint triggers the HotFolderService to start processing files.
+  
+  Query Parameters:
+  - callbackuri: Full HTTP/HTTPS URL to receive callbacks (required)
+}
