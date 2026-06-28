@@ -25,7 +25,9 @@ namespace FileTransfer.Tests
         private async Task RunSweep(IOptions<HotFolderOptions> opts)
         {
             var svc = new HotFolderCleanupService(
-                NullLogger<HotFolderCleanupService>.Instance, opts);
+                NullLogger<HotFolderCleanupService>.Instance,
+                opts,
+                new StubFileRecordStore());
             using var cts = new CancellationTokenSource();
             await svc.StartAsync(cts.Token);   // sweeps immediately
             await Task.Delay(150);
