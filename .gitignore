@@ -1,6 +1,7 @@
 .DS_Store
-/bin/
-/obj/
+**/bin/
+bin/
+**/obj/
 /.vs/
 /.idea/
 *.user
@@ -16,3 +17,7 @@ TestResults/
 .publish/
 publish/
 temp/
+tests/bin/
+tests/obj/
+tools/MockRestServer/obj/
+tools/MockRestServer/bin/
